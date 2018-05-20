@@ -12,12 +12,12 @@
 namespace Flarum\Tags\Listener;
 
 use Flarum\Api\Controller;
-use Flarum\Api\Event\Serializing;
-use Flarum\Api\Event\WillGetData;
 use Flarum\Api\Serializer\DiscussionSerializer;
-use Flarum\Discussion\Discussion;
+use Flarum\Core\Discussion;
+use Flarum\Event\ConfigureApiController;
 use Flarum\Event\GetApiRelationship;
 use Flarum\Event\GetModelRelationship;
+use Flarum\Event\PrepareApiAttributes;
 use Flarum\Tags\Tag;
 use Illuminate\Contracts\Events\Dispatcher;
 

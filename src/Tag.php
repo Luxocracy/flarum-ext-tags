@@ -53,10 +53,13 @@ class Tag extends AbstractModel
      * @param string $slug
      * @param string $description
      * @param string $color
+     * @param string $backgroundUrl
+     * @param string $tagHeroPos
+     * @param string $tileHeroPos
      * @param bool $isHidden
      * @return static
      */
-    public static function build($name, $slug, $description, $color, $isHidden)
+    public static function build($name, $slug, $description, $color, $backgroundUrl, $tagHeroPos, $tileHeroPos, $isHidden)
     {
         $tag = new static;
 
@@ -64,6 +67,9 @@ class Tag extends AbstractModel
         $tag->slug = $slug;
         $tag->description = $description;
         $tag->color = $color;
+        $tag->background_path = $backgroundUrl;
+        $tag->tag_hero_pos = $tagHeroPos;
+        $tag->tile_hero_pos = $tileHeroPos;
         $tag->is_hidden = (bool) $isHidden;
 
         return $tag;

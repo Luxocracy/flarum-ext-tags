@@ -217,8 +217,13 @@ var _reloadSortable = function(sortable) {
  */
 var sortable = function(selector, options) {
 
+
+
+
   var $sortables = $(selector);
   var method = String(options);
+
+
 
   options = $.extend({
     connectWith: false,
@@ -667,6 +672,9 @@ System.register('flarum/tags/components/EditTagModal', ['flarum/components/Modal
             this.slug = m.prop(this.tag.slug() || '');
             this.description = m.prop(this.tag.description() || '');
             this.color = m.prop(this.tag.color() || '');
+            this.backgroundUrl = m.prop(this.tag.backgroundUrl() || '');
+            this.tagHeroPos = m.prop(this.tag.tagHeroPos() || '');
+            this.tileHeroPos = m.prop(this.tag.tileHeroPos() || '');
             this.isHidden = m.prop(this.tag.isHidden() || false);
           }
         }, {
@@ -737,6 +745,33 @@ System.register('flarum/tags/components/EditTagModal', ['flarum/components/Modal
                   m('input', { className: 'FormControl', placeholder: '#aaaaaa', value: this.color(), oninput: m.withAttr('value', this.color) })
                 ),
                 m(
+                	'div',
+                	{ className: 'Form-group' },
+                	m(
+                		'label',
+                		null,
+                		'Background Image'),
+                	m('input', { className: 'FormControl', placeholder: 'image.png', value: this.backgroundUrl(), oninput: m.withAttr('value', this.backgroundUrl) })
+                ),
+                m(
+                	'div',
+                	{ className: 'Form-group' },
+                	m(
+                		'label',
+                		null,
+                		'TagHero Position'),
+                	m('input', { className: 'FormControl', placeholder: '0px 0px', value: this.tagHeroPos(), oninput: m.withAttr('value', this.tagHeroPos) })
+                ),
+                m(
+                	'div',
+                	{ className: 'Form-group' },
+                	m(
+                		'label',
+                		null,
+                		'TileHero Position'),
+                	m('input', { className: 'FormControl', placeholder: '0px 0px', value: this.tileHeroPos(), oninput: m.withAttr('value', this.tileHeroPos) })
+                ),
+                m(
                   'div',
                   { className: 'Form-group' },
                   m(
@@ -776,6 +811,9 @@ System.register('flarum/tags/components/EditTagModal', ['flarum/components/Modal
               slug: this.slug(),
               description: this.description(),
               color: this.color(),
+              backgroundUrl: this.backgroundUrl().match('url\\(') ? this.backgroundUrl() : this.backgroundUrl().length > 0 ? 'url(' + this.backgroundUrl() + ')' : this.backgroundUrl(),
+              tagHeroPos: this.tagHeroPos(),
+              tileHeroPos: this.tileHeroPos(),
               isHidden: this.isHidden()
             };
           }
@@ -1332,6 +1370,8 @@ System.register('flarum/tags/models/Tag', ['flarum/Model', 'flarum/utils/mixin',
         color: Model.attribute('color'),
         backgroundUrl: Model.attribute('backgroundUrl'),
         backgroundMode: Model.attribute('backgroundMode'),
+        tagHeroPos: Model.attribute('tagHeroPos'),
+        tileHeroPos: Model.attribute('tileHeroPos'),
 
         position: Model.attribute('position'),
         parent: Model.hasOne('parent'),

@@ -72,6 +72,18 @@ class EditTagHandler
             $tag->color = $attributes['color'];
         }
 
+        if (isset($attributes['backgroundUrl'])) {
+            $tag->background_path = $attributes['backgroundUrl'];
+        }
+
+        if (isset($attributes['tagHeroPos'])) {
+            $tag->tag_hero_pos = $attributes['tagHeroPos'];
+        }
+
+        if (isset($attributes['tileHeroPos'])) {
+            $tag->tile_hero_pos = $attributes['tileHeroPos'];
+        }
+
         if (isset($attributes['isHidden'])) {
             $tag->is_hidden = (bool) $attributes['isHidden'];
         }

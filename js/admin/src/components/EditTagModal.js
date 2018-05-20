@@ -18,6 +18,9 @@ export default class EditTagModal extends Modal {
     this.slug = m.prop(this.tag.slug() || '');
     this.description = m.prop(this.tag.description() || '');
     this.color = m.prop(this.tag.color() || '');
+    this.backgroundUrl = m.prop(this.tag.backgroundUrl() || '');
+    this.tagHeroPos = m.prop(this.tag.tagHeroPos() || '');
+    this.tileHeroPos = m.prop(this.tag.tileHeroPos() || '');
     this.isHidden = m.prop(this.tag.isHidden() || false);
   }
 
@@ -58,7 +61,22 @@ export default class EditTagModal extends Modal {
 
           <div className="Form-group">
             <label>{app.translator.trans('flarum-tags.admin.edit_tag.color_label')}</label>
-            <input className="FormControl" placeholder="#aaaaaa" value={this.color()} oninput={m.withAttr('value', this.color)}/>
+            <input className="FormControl" placeholder="#aaaaaa" value={this.color()} oninput={m.withAttr('value', this.color)} />
+          </div>
+
+          <div className="Form-group">
+            <label>Background Image</label>
+            <input className="FormControl" placeholder="image.png" value={this.backgroundUrl()} oninput={m.withAttr('value', this.backgroundUrl)} />
+          </div>
+
+          <div className="Form-group">
+            <label>TagHero Position</label>
+            <input className="FormControl" placeholder="0px 0px" value={this.tagHeroPos()} oninput={m.withAttr('value', this.tagHeroPos)} />
+          </div>
+
+          <div className="Form-group">
+            <label>TileHero Position</label>
+            <input className="FormControl" placeholder="0px 0px" value={this.tileHeroPos()} oninput={m.withAttr('value', this.tileHeroPos)} />
           </div>
 
           <div className="Form-group">
@@ -94,7 +112,10 @@ export default class EditTagModal extends Modal {
       slug: this.slug(),
       description: this.description(),
       color: this.color(),
-      isHidden: this.isHidden()
+      backgroundUrl: this.backgroundUrl().match('url\\(') ? this.backgroundUrl() : this.backgroundUrl().length > 0 ? 'url(' + this.backgroundUrl() + ')' : this.backgroundUrl(),
+      tagHeroPos: this.tagHeroPos(),
+      tileHeroPos: this.tileHeroPos(),
+      isHidden: this.isHidden(),
     };
   }
 

@@ -36,8 +36,7 @@ export default class TagsPage extends Component {
                 const children = sortTags(app.store.all('tags').filter(child => child.parent() === tag));
 
                 return (
-                  <li className={'TagTile ' + (tag.color() ? 'colored' : '')}
-                    style={{backgroundColor: tag.color()}}>
+                  <li className={'TagTile ' + (tag.backgroundUrl() ? 'background' : tag.color() ? 'colored' : '')} style={tag.backgroundUrl() && tag.tileHeroPos() ? { backgroundImage: tag.backgroundUrl(), backgroundPosition: tag.tileHeroPos() } : tag.backgroundUrl() ? { backgroundImage: tag.backgroundUrl() } : { backgroundColor: tag.color() }}>
                     <a className="TagTile-info" href={app.route.tag(tag)} config={m.route}>
                       <h3 className="TagTile-name">{tag.name()}</h3>
                       <p className="TagTile-description">{tag.description()}</p>

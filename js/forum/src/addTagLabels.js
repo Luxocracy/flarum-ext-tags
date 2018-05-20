@@ -27,8 +27,13 @@ export default function() {
 
     if (tags && tags.length) {
       const color = tags[0].color();
-      if (color) {
-        view.attrs.style = {backgroundColor: color};
+      const background = tags[0].backgroundUrl();
+
+      if (background) {
+        view.attrs.style = { backgroundColor: color, backgroundImage: background };
+        view.attrs.className += ' DiscussionHero--background';
+      } else if (color) {
+        view.attrs.style = { backgroundColor: color };
         view.attrs.className += ' DiscussionHero--colored';
       }
     }

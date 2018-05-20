@@ -224,13 +224,19 @@ System.register('flarum/tags/addTagLabels', ['flarum/extend', 'flarum/components
       params.include.push('tags');
     });
 
-    // Restyle a discussion's hero to use its first tag's color.
+    // Restyle a discussion's hero to use its last tag's color.
     extend(DiscussionHero.prototype, 'view', function (view) {
       var tags = sortTags(this.props.discussion.tags());
 
       if (tags && tags.length) {
-        var color = tags[0].color();
-        if (color) {
+        var color = tags[tags.length -1].color();
+		
+        var background = tags[tags.length - 1].backgroundUrl();
+        var tagHeroPos = tags[tags.length - 1].tagHeroPos();
+        if (background) {
+          view.attrs.style = background && tagHeroPos ? { backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : { backgroundColor: color, backgroundImage: background };
+          view.attrs.className += ' DiscussionHero--background';
+        } else if (color) {
           view.attrs.style = { backgroundColor: color };
           view.attrs.className += ' DiscussionHero--colored';
         }
@@ -852,11 +858,13 @@ System.register('flarum/tags/components/TagHero', ['flarum/Component'], function
           value: function view() {
             var tag = this.props.tag;
             var color = tag.color();
-
+            var background = tag.backgroundUrl();
+            var tagHeroPos = tag.tagHeroPos();
+			
             return m(
               'header',
-              { className: 'Hero TagHero' + (color ? ' TagHero--colored' : ''),
-                style: color ? { color: '#fff', backgroundColor: color } : '' },
+              { className: 'Hero TagHero' + (background ? ' TagHero--background' : color ? ' TagHero--colored' : ''),
+			  style: background && tagHeroPos ? { color: '#fff', backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : background ? { color: '#fff', backgroundColor: color, backgroundImage: background } : color ? { color: '#fff', backgroundColor: color } : '' },
               m(
                 'div',
                 { className: 'container' },
@@ -1296,6 +1304,8 @@ System.register('flarum/tags/models/Tag', ['flarum/Model', 'flarum/utils/mixin',
         color: Model.attribute('color'),
         backgroundUrl: Model.attribute('backgroundUrl'),
         backgroundMode: Model.attribute('backgroundMode'),
+	    tagHeroPos: Model.attribute('tagHeroPos'),
+	    tileHeroPos: Model.attribute('tileHeroPos'),
 
         position: Model.attribute('position'),
         parent: Model.hasOne('parent'),

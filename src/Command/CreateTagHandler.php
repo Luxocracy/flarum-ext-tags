@@ -48,6 +48,9 @@ class CreateTagHandler
             array_get($data, 'attributes.slug'),
             array_get($data, 'attributes.description'),
             array_get($data, 'attributes.color'),
+            array_get($data, 'attributes.backgroundUrl'),
+            array_get($data, 'attributes.tagHeroPos'),
+            array_get($data, 'attributes.tileHeroPos'),
             array_get($data, 'attributes.isHidden')
         );
 
