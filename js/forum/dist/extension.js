@@ -1030,8 +1030,8 @@ System.register('flarum/tags/components/TagsPage', ['flarum/Component', 'flarum/
 
                       return m(
                         'li',
-                        { className: 'TagTile ' + (tag.color() ? 'colored' : ''),
-                          style: { backgroundColor: tag.color() } },
+                        { className: 'TagTile' + (tag.backgroundUrl() ? ' background' : tag.color() ? ' colored' : ''),
+                            style: tag.backgroundUrl() && tag.tileHeroPos() ? { backgroundColor: tag.color(), backgroundImage: tag.backgroundUrl(), backgroundPosition: tag.tileHeroPos() } : tag.backgroundUrl() ? { backgroundColor: tag.color(), backgroundImage: tag.backgroundUrl() } : tag.color() ? { backgroundColor: tag.color() } : '',},
                         m(
                           'a',
                           { className: 'TagTile-info', href: app.route.tag(tag), config: m.route },
