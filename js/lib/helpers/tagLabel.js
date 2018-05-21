@@ -8,7 +8,13 @@ export default function tagLabel(tag, attrs = {}) {
 
   if (tag) {
     const color = tag.color();
-    if (color) {
+    const background = tag.backgroundUrl();
+
+    if (background) {
+      attrs.style.color = '#fff'; // Force white
+      attrs.style.backgroundColor = color;
+      attrs.className += ' background';
+    } else if (color) {
       attrs.style.backgroundColor = attrs.style.color = color;
       attrs.className += ' colored';
     }

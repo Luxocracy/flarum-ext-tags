@@ -225,13 +225,15 @@ System.register('flarum/tags/addTagLabels', ['flarum/extend', 'flarum/components
     });
 
     // Restyle a discussion's hero to use its first tag's color.
+    // Changed to use child background image & color if it only has 1 child tag.
     extend(DiscussionHero.prototype, 'view', function (view) {
       var tags = sortTags(this.props.discussion.tags());
 
       if (tags && tags.length) {
-        var color = tags[tags.length - 1].color();
-        var background = tags[tags.length - 1].backgroundUrl();
-        var tagHeroPos = tags[tags.length - 1].tagHeroPos();
+        var index = tags.length > 2 ? 0 : tags.length - 1;
+        var color = tags[index].color();
+        var background = tags[index].backgroundUrl();
+        var tagHeroPos = tags[index].tagHeroPos();
 
         if (background) {
           view.attrs.style = background && tagHeroPos ? { backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : { backgroundColor: color, backgroundImage: background };
@@ -1140,7 +1142,13 @@ System.register('flarum/tags/helpers/tagLabel', ['flarum/utils/extract'], functi
 
     if (tag) {
       var color = tag.color();
-      if (color) {
+      var background = tag.backgroundUrl();
+
+      if (background) {
+        attrs.style.color = '#fff'; // Force white
+        attrs.style.backgroundColor = color;
+        attrs.className += ' background';
+      } else if (color) {
         attrs.style.backgroundColor = attrs.style.color = color;
         attrs.className += ' colored';
       }

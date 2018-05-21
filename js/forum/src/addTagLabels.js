@@ -22,13 +22,15 @@ export default function() {
   });
 
   // Restyle a discussion's hero to use its first tag's color.
+  // Changed to use child background image & color if it only has 1 child tag.
   extend(DiscussionHero.prototype, 'view', function(view) {
     const tags = sortTags(this.props.discussion.tags());
 
     if (tags && tags.length) {
-      const color = tags[tags.length - 1].color();
-      const background = tags[tags.length - 1].backgroundUrl();
-      const tagHeroPos = tags[tags.length - 1].tagHeroPos();
+      const index = tags.length > 2 ? 0:tags.length - 1;
+      const color = tags[index].color();
+      const background = tags[index].backgroundUrl();
+      const tagHeroPos = tags[index].tagHeroPos();
 
       if (background) {
         view.attrs.style = background && tagHeroPos ? { backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : { backgroundColor: color, backgroundImage: background };
