@@ -26,11 +26,12 @@ export default function() {
     const tags = sortTags(this.props.discussion.tags());
 
     if (tags && tags.length) {
-      const color = tags[0].color();
-      const background = tags[0].backgroundUrl();
+      const color = tags[tags.length - 1].color();
+      const background = tags[tags.length - 1].backgroundUrl();
+      const tagHeroPos = tags[tags.length - 1].tagHeroPos();
 
       if (background) {
-        view.attrs.style = { backgroundColor: color, backgroundImage: background };
+        view.attrs.style = background && tagHeroPos ? { backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : { backgroundColor: color, backgroundImage: background };
         view.attrs.className += ' DiscussionHero--background';
       } else if (color) {
         view.attrs.style = { backgroundColor: color };

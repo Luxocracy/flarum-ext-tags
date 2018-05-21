@@ -217,13 +217,8 @@ var _reloadSortable = function(sortable) {
  */
 var sortable = function(selector, options) {
 
-
-
-
   var $sortables = $(selector);
   var method = String(options);
-
-
 
   options = $.extend({
     connectWith: false,
@@ -427,7 +422,7 @@ System.register('flarum/tags/addTagChangePermission', ['flarum/extend', 'flarum/
   _export('default', function () {
     extend(PermissionGrid.prototype, 'startItems', function (items) {
       items.add('allowTagChange', {
-        icon: 'tag',
+        icon: 'fas fa-tag',
         label: app.translator.trans('flarum-tags.admin.permissions.allow_edit_tags_label'),
         setting: function setting() {
           var minutes = parseInt(app.data.settings.allow_tag_change, 10);
@@ -463,7 +458,7 @@ System.register('flarum/tags/addTagPermission', ['flarum/extend', 'flarum/compon
   _export('default', function () {
     extend(PermissionGrid.prototype, 'moderateItems', function (items) {
       items.add('tag', {
-        icon: 'tag',
+        icon: 'fas fa-tag',
         label: app.translator.trans('flarum-tags.admin.permissions.tag_discussions_label'),
         permission: 'discussion.tag'
       }, 95);
@@ -521,7 +516,7 @@ System.register('flarum/tags/addTagsPane', ['flarum/extend', 'flarum/components/
     extend(AdminNav.prototype, 'items', function (items) {
       items.add('tags', AdminLinkButton.component({
         href: app.route('tags'),
-        icon: 'tags',
+        icon: 'fas fa-tags',
         children: app.translator.trans('flarum-tags.admin.nav.tags_button'),
         description: app.translator.trans('flarum-tags.admin.nav.tags_text')
       }));
@@ -598,7 +593,7 @@ System.register('flarum/tags/addTagsPermissionScope', ['flarum/extend', 'flarum/
           className: 'Dropdown--restrictByTag',
           buttonClassName: 'Button Button--text',
           label: app.translator.trans('flarum-tags.admin.permissions.restrict_by_tag_heading'),
-          icon: 'plus',
+          icon: 'fas fa-plus',
           caretIcon: null,
           children: tags.map(function (tag) {
             return Button.component({
@@ -745,31 +740,34 @@ System.register('flarum/tags/components/EditTagModal', ['flarum/components/Modal
                   m('input', { className: 'FormControl', placeholder: '#aaaaaa', value: this.color(), oninput: m.withAttr('value', this.color) })
                 ),
                 m(
-                	'div',
-                	{ className: 'Form-group' },
-                	m(
-                		'label',
-                		null,
-                		'Background Image'),
-                	m('input', { className: 'FormControl', placeholder: 'image.png', value: this.backgroundUrl(), oninput: m.withAttr('value', this.backgroundUrl) })
+                  'div',
+                  { className: 'Form-group' },
+                  m(
+                    'label',
+                    null,
+                    'Background Image'
+                  ),
+                  m('input', { className: 'FormControl', placeholder: 'image.png', value: this.backgroundUrl(), oninput: m.withAttr('value', this.backgroundUrl) })
                 ),
                 m(
-                	'div',
-                	{ className: 'Form-group' },
-                	m(
-                		'label',
-                		null,
-                		'TagHero Position'),
-                	m('input', { className: 'FormControl', placeholder: '0px 0px', value: this.tagHeroPos(), oninput: m.withAttr('value', this.tagHeroPos) })
+                  'div',
+                  { className: 'Form-group' },
+                  m(
+                    'label',
+                    null,
+                    'TagHero Position'
+                  ),
+                  m('input', { className: 'FormControl', placeholder: '0px 0px', value: this.tagHeroPos(), oninput: m.withAttr('value', this.tagHeroPos) })
                 ),
                 m(
-                	'div',
-                	{ className: 'Form-group' },
-                	m(
-                		'label',
-                		null,
-                		'TileHero Position'),
-                	m('input', { className: 'FormControl', placeholder: '0px 0px', value: this.tileHeroPos(), oninput: m.withAttr('value', this.tileHeroPos) })
+                  'div',
+                  { className: 'Form-group' },
+                  m(
+                    'label',
+                    null,
+                    'TileHero Position'
+                  ),
+                  m('input', { className: 'FormControl', placeholder: '0px 0px', value: this.tileHeroPos(), oninput: m.withAttr('value', this.tileHeroPos) })
                 ),
                 m(
                   'div',
@@ -995,7 +993,7 @@ System.register('flarum/tags/components/TagsPage', ['flarum/components/Page', 'f
         ),
         Button.component({
           className: 'Button Button--link',
-          icon: 'pencil',
+          icon: 'fas fa-pencil-alt',
           onclick: function onclick() {
             return app.modal.show(new EditTagModal({ tag: tag }));
           }
@@ -1053,7 +1051,7 @@ System.register('flarum/tags/components/TagsPage', ['flarum/components/Page', 'f
                   ),
                   Button.component({
                     className: 'Button Button--primary',
-                    icon: 'plus',
+                    icon: 'fas fa-plus',
                     children: app.translator.trans('flarum-tags.admin.tags.create_tag_button'),
                     onclick: function onclick() {
                       return app.modal.show(new EditTagModal());
@@ -1399,48 +1397,48 @@ System.register('flarum/tags/models/Tag', ['flarum/Model', 'flarum/utils/mixin',
 "use strict";
 
 System.register("flarum/tags/utils/sortTags", [], function (_export, _context) {
-  "use strict";
+    "use strict";
 
-  function sortTags(tags) {
-    return tags.slice(0).sort(function (a, b) {
-      var aPos = a.position();
-      var bPos = b.position();
+    function sortTags(tags) {
+        return tags.slice(0).sort(function (a, b) {
+            var aPos = a.position();
+            var bPos = b.position();
 
-      // If they're both secondary tags, sort them by their discussions count,
-      // descending.
-      if (aPos === null && bPos === null) return b.discussionsCount() - a.discussionsCount();
+            // If they're both secondary tags, sort them by their discussions count,
+            // descending.
+            if (aPos === null && bPos === null) return b.discussionsCount() - a.discussionsCount();
 
-      // If just one is a secondary tag, then the primary tag should
-      // come first.
-      if (bPos === null) return -1;
-      if (aPos === null) return 1;
+            // If just one is a secondary tag, then the primary tag should
+            // come first.
+            if (bPos === null) return -1;
+            if (aPos === null) return 1;
 
-      // If we've made it this far, we know they're both primary tags. So we'll
-      // need to see if they have parents.
-      var aParent = a.parent();
-      var bParent = b.parent();
+            // If we've made it this far, we know they're both primary tags. So we'll
+            // need to see if they have parents.
+            var aParent = a.parent();
+            var bParent = b.parent();
 
-      // If they both have the same parent, then their positions are local,
-      // so we can compare them directly.
-      if (aParent === bParent) return aPos - bPos;
+            // If they both have the same parent, then their positions are local,
+            // so we can compare them directly.
+            if (aParent === bParent) return aPos - bPos;
 
-      // If they are both child tags, then we will compare the positions of their
-      // parents.
-      else if (aParent && bParent) return aParent.position() - bParent.position();
+            // If they are both child tags, then we will compare the positions of their
+            // parents.
+            else if (aParent && bParent) return aParent.position() - bParent.position();
 
-        // If we are comparing a child tag with its parent, then we let the parent
-        // come first. If we are comparing an unrelated parent/child, then we
-        // compare both of the parents.
-        else if (aParent) return aParent === b ? 1 : aParent.position() - bPos;else if (bParent) return bParent === a ? -1 : aPos - bParent.position();
+                // If we are comparing a child tag with its parent, then we let the parent
+                // come first. If we are comparing an unrelated parent/child, then we
+                // compare both of the parents.
+                else if (aParent) return aParent === b ? 1 : aParent.position() - bPos;else if (bParent) return bParent === a ? -1 : aPos - bParent.position();
 
-      return 0;
-    });
-  }
+            return 0;
+        });
+    }
 
-  _export("default", sortTags);
+    _export("default", sortTags);
 
-  return {
-    setters: [],
-    execute: function () {}
-  };
+    return {
+        setters: [],
+        execute: function () {}
+    };
 });

@@ -105,7 +105,7 @@ System.register('flarum/tags/addTagControl', ['flarum/extend', 'flarum/utils/Dis
       if (discussion.canTag()) {
         items.add('tags', Button.component({
           children: app.translator.trans('flarum-tags.forum.discussion_controls.edit_tags_button'),
-          icon: 'tag',
+          icon: 'fas fa-tag',
           onclick: function onclick() {
             return app.modal.show(new TagDiscussionModal({ discussion: discussion }));
           }
@@ -224,15 +224,15 @@ System.register('flarum/tags/addTagLabels', ['flarum/extend', 'flarum/components
       params.include.push('tags');
     });
 
-    // Restyle a discussion's hero to use its last tag's color.
+    // Restyle a discussion's hero to use its first tag's color.
     extend(DiscussionHero.prototype, 'view', function (view) {
       var tags = sortTags(this.props.discussion.tags());
 
       if (tags && tags.length) {
-        var color = tags[tags.length -1].color();
-		
+        var color = tags[tags.length - 1].color();
         var background = tags[tags.length - 1].backgroundUrl();
         var tagHeroPos = tags[tags.length - 1].tagHeroPos();
+
         if (background) {
           view.attrs.style = background && tagHeroPos ? { backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : { backgroundColor: color, backgroundImage: background };
           view.attrs.className += ' DiscussionHero--background';
@@ -283,7 +283,7 @@ System.register('flarum/tags/addTagList', ['flarum/extend', 'flarum/components/I
     // to the index page's sidebar.
     extend(IndexPage.prototype, 'navItems', function (items) {
       items.add('tags', LinkButton.component({
-        icon: 'th-large',
+        icon: 'fas fa-th-large',
         children: app.translator.trans('flarum-tags.forum.index.tags_link'),
         href: app.route('tags')
       }), -10);
@@ -370,7 +370,7 @@ System.register('flarum/tags/components/DiscussionTaggedPost', ['flarum/componen
         babelHelpers.createClass(DiscussionTaggedPost, [{
           key: 'icon',
           value: function icon() {
-            return 'tag';
+            return 'fas fa-tag';
           }
         }, {
           key: 'descriptionKey',
@@ -675,7 +675,7 @@ System.register('flarum/tags/components/TagDiscussionModal', ['flarum/components
                     type: 'submit',
                     className: 'Button Button--primary',
                     disabled: primaryCount < this.minPrimary || secondaryCount < this.minSecondary,
-                    icon: 'check',
+                    icon: 'fas fa-check',
                     children: app.translator.trans('flarum-tags.forum.choose_tags.submit_button')
                   })
                 )
@@ -860,11 +860,10 @@ System.register('flarum/tags/components/TagHero', ['flarum/Component'], function
             var color = tag.color();
             var background = tag.backgroundUrl();
             var tagHeroPos = tag.tagHeroPos();
-			
+
             return m(
               'header',
-              { className: 'Hero TagHero' + (background ? ' TagHero--background' : color ? ' TagHero--colored' : ''),
-			  style: background && tagHeroPos ? { color: '#fff', backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : background ? { color: '#fff', backgroundColor: color, backgroundImage: background } : color ? { color: '#fff', backgroundColor: color } : '' },
+              { className: 'Hero TagHero' + (background ? ' TagHero--background' : color ? ' TagHero--colored' : ''), style: tagHeroPos && tagHeroPos ? { color: '#fff', backgroundColor: color, backgroundImage: background, backgroundPosition: tagHeroPos } : background ? { color: '#fff', backgroundColor: color, backgroundImage: background } : color ? { color: '#fff', backgroundColor: color } : '' },
               m(
                 'div',
                 { className: 'container' },
@@ -986,7 +985,7 @@ System.register('flarum/tags/components/TagsPage', ['flarum/Component', 'flarum/
             }));
 
             app.current = this;
-            app.history.push('tags', icon('th-large'));
+            app.history.push('tags', icon('fas fa-th-large'));
             app.drawer.hide();
             app.modal.close();
           }
@@ -1030,8 +1029,7 @@ System.register('flarum/tags/components/TagsPage', ['flarum/Component', 'flarum/
 
                       return m(
                         'li',
-                        { className: 'TagTile' + (tag.backgroundUrl() ? ' background' : tag.color() ? ' colored' : ''),
-                            style: tag.backgroundUrl() && tag.tileHeroPos() ? { backgroundColor: tag.color(), backgroundImage: tag.backgroundUrl(), backgroundPosition: tag.tileHeroPos() } : tag.backgroundUrl() ? { backgroundColor: tag.color(), backgroundImage: tag.backgroundUrl() } : tag.color() ? { backgroundColor: tag.color() } : '',},
+                        { className: 'TagTile ' + (tag.backgroundUrl() ? 'background' : tag.color() ? 'colored' : ''), style: tag.backgroundUrl() && tag.tileHeroPos() ? { backgroundImage: tag.backgroundUrl(), backgroundPosition: tag.tileHeroPos() } : tag.backgroundUrl() ? { backgroundImage: tag.backgroundUrl() } : { backgroundColor: tag.color() } },
                         m(
                           'a',
                           { className: 'TagTile-info', href: app.route.tag(tag), config: m.route },
@@ -1304,8 +1302,8 @@ System.register('flarum/tags/models/Tag', ['flarum/Model', 'flarum/utils/mixin',
         color: Model.attribute('color'),
         backgroundUrl: Model.attribute('backgroundUrl'),
         backgroundMode: Model.attribute('backgroundMode'),
-	    tagHeroPos: Model.attribute('tagHeroPos'),
-	    tileHeroPos: Model.attribute('tileHeroPos'),
+        tagHeroPos: Model.attribute('tagHeroPos'),
+        tileHeroPos: Model.attribute('tileHeroPos'),
 
         position: Model.attribute('position'),
         parent: Model.hasOne('parent'),
@@ -1333,48 +1331,48 @@ System.register('flarum/tags/models/Tag', ['flarum/Model', 'flarum/utils/mixin',
 "use strict";
 
 System.register("flarum/tags/utils/sortTags", [], function (_export, _context) {
-  "use strict";
+    "use strict";
 
-  function sortTags(tags) {
-    return tags.slice(0).sort(function (a, b) {
-      var aPos = a.position();
-      var bPos = b.position();
+    function sortTags(tags) {
+        return tags.slice(0).sort(function (a, b) {
+            var aPos = a.position();
+            var bPos = b.position();
 
-      // If they're both secondary tags, sort them by their discussions count,
-      // descending.
-      if (aPos === null && bPos === null) return b.discussionsCount() - a.discussionsCount();
+            // If they're both secondary tags, sort them by their discussions count,
+            // descending.
+            if (aPos === null && bPos === null) return b.discussionsCount() - a.discussionsCount();
 
-      // If just one is a secondary tag, then the primary tag should
-      // come first.
-      if (bPos === null) return -1;
-      if (aPos === null) return 1;
+            // If just one is a secondary tag, then the primary tag should
+            // come first.
+            if (bPos === null) return -1;
+            if (aPos === null) return 1;
 
-      // If we've made it this far, we know they're both primary tags. So we'll
-      // need to see if they have parents.
-      var aParent = a.parent();
-      var bParent = b.parent();
+            // If we've made it this far, we know they're both primary tags. So we'll
+            // need to see if they have parents.
+            var aParent = a.parent();
+            var bParent = b.parent();
 
-      // If they both have the same parent, then their positions are local,
-      // so we can compare them directly.
-      if (aParent === bParent) return aPos - bPos;
+            // If they both have the same parent, then their positions are local,
+            // so we can compare them directly.
+            if (aParent === bParent) return aPos - bPos;
 
-      // If they are both child tags, then we will compare the positions of their
-      // parents.
-      else if (aParent && bParent) return aParent.position() - bParent.position();
+            // If they are both child tags, then we will compare the positions of their
+            // parents.
+            else if (aParent && bParent) return aParent.position() - bParent.position();
 
-        // If we are comparing a child tag with its parent, then we let the parent
-        // come first. If we are comparing an unrelated parent/child, then we
-        // compare both of the parents.
-        else if (aParent) return aParent === b ? 1 : aParent.position() - bPos;else if (bParent) return bParent === a ? -1 : aPos - bParent.position();
+                // If we are comparing a child tag with its parent, then we let the parent
+                // come first. If we are comparing an unrelated parent/child, then we
+                // compare both of the parents.
+                else if (aParent) return aParent === b ? 1 : aParent.position() - bPos;else if (bParent) return bParent === a ? -1 : aPos - bParent.position();
 
-      return 0;
-    });
-  }
+            return 0;
+        });
+    }
 
-  _export("default", sortTags);
+    _export("default", sortTags);
 
-  return {
-    setters: [],
-    execute: function () {}
-  };
+    return {
+        setters: [],
+        execute: function () {}
+    };
 });

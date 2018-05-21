@@ -10,6 +10,8 @@ export default class Tag extends mixin(Model, {
   color: Model.attribute('color'),
   backgroundUrl: Model.attribute('backgroundUrl'),
   backgroundMode: Model.attribute('backgroundMode'),
+  tagHeroPos: Model.attribute('tagHeroPos'),
+  tileHeroPos: Model.attribute('tileHeroPos'),
 
   position: Model.attribute('position'),
   parent: Model.hasOne('parent'),
