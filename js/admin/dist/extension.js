@@ -682,7 +682,8 @@ System.register('flarum/tags/components/EditTagModal', ['flarum/components/Modal
           value: function title() {
             return this.name() ? tagLabel({
               name: this.name,
-              color: this.color
+              color: this.color,
+              backgroundUrl: this.backgroundUrl
             }) : app.translator.trans('flarum-tags.admin.edit_tag.title');
           }
         }, {
@@ -1228,7 +1229,13 @@ System.register('flarum/tags/helpers/tagLabel', ['flarum/utils/extract'], functi
 
     if (tag) {
       var color = tag.color();
-      if (color) {
+      var background = tag.backgroundUrl();
+
+      if (background) {
+        attrs.style.color = '#fff'; // Force white
+        attrs.style.backgroundColor = color;
+        attrs.className += ' background';
+      } else if (color) {
         attrs.style.backgroundColor = attrs.style.color = color;
         attrs.className += ' colored';
       }

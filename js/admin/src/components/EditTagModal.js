@@ -32,7 +32,8 @@ export default class EditTagModal extends Modal {
     return this.name()
       ? tagLabel({
         name: this.name,
-        color: this.color
+        color: this.color,
+        backgroundUrl: this.backgroundUrl
       })
       : app.translator.trans('flarum-tags.admin.edit_tag.title');
   }
